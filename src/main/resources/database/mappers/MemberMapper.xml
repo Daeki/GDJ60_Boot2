@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.iu.base.member.MemberDAO">
+	
+	<insert id="setJoin" parameterType="MemberVO">
+		INSERT INTO MEMBER (USERNAME,PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
+		VALUES(#{userName}, #{password}, #{name}, #{email}, #{birth}, #{enabled})
+	</insert>
+	
+	<insert id="setMemberRole" parameterType="Map">
+		INSERT INTO MEMBER_ROLE (USERNAME, NUM)
+		VALUES(#{userName}, #{num})
+	</insert>
+	
+	<select id="idDuplicateCheck" resultType="MemberVO" parameterType="MemberVO">
+		SELECT USERNAME FROM MEMBER WHERE USERNAME=#{userName}
+	</select>
+	
+	<select id="getLogin" parameterType="MemberVO" resultMap="getLoginResult">
+		SELECT M.userName, M.email, R.num, R.ROLENAME 
+		FROM MEMBER M
+			 INNER JOIN
+			 MEMBER_ROLE MR
+			 ON M.USERNAME = MR.USERNAME
+			 INNER JOIN
+			 ROLE R
+			 ON MR.NUM = R.NUM
+		WHERE M.USERNAME=#{userName} AND M.PASSWORD=#{password}
+	</select>
+	
+	<resultMap type="MemberVO" id="getLoginResult">
+		<id property="userName" column="USERNAME"/>
+		<result property="email" column="EMAIL"/>
+		<collection property="roleVOs" javaType="List" ofType="RoleVO">
+			<id property="num" column="NUM"/>
+			<result property="roleName" column="ROLENAME"/>
+		</collection>
+	
+	</resultMap>
+	
+	
+	
+	
+
+
+</mapper>  

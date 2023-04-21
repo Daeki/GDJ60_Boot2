@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.iu.base.board.qna.QnaDAO">
+	<sql id="search">
+		<where>
+			<if test="kind == 'title'">
+				TITLE LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="kind == 'contents'">
+				CONTENTS LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="kind == 'writer'">
+				WRITER LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</where>
+	
+	</sql>
+	
+	<select id="getTotalCount" parameterType="Pager" resultType="Long">
+		SELECT COUNT(NUM) FROM QNA 
+		<include refid="search"></include>
+	</select>
+	
+	
+	<select id="getList" parameterType="Pager" resultType="QnaVO">
+		SELECT * FROM QNA 
+		<include refid="search"></include>
+		ORDER BY NUM DESC 
+		LIMIT #{startRow}, #{perPage}
+	</select>
+	
+	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
+		SELECT *
+		FROM QNA N
+			 LEFT JOIN
+			 QNAFILE NF
+			 USING(NUM)
+		WHERE NUM=#{num}			 
+	</select>
+	
+	<resultMap type="QnaVO" id="getDetailResult">
+		<id property="num" column="NUM"/>
+		<result property="title" column="TITLE"/>
+		<result property="writer" column="WRITER"/>
+		<result property="contents" column="CONTENTS"/>
+		<result property="regDate" column="REGDATE"/>
+		<result property="hit" column="HIT"/>
+		<result property="ref" column="REF"/>
+		<result property="step" column="STEP"/>
+		<result property="depth" column="DEPTH"/>
+		<collection property="boardFileVOs" javaType="List" ofType="BoardFileVO">
+			<id property="fileNum" column="FILENUM"/>
+			<result property="fileName" column="FILENAME"/>
+			<result property="oriName" column="ORINAME"/>
+		</collection>
+		
+	</resultMap>
+	
+	<select id="getFileDetail" parameterType="BoardFileVO" resultType="BoardFileVO">
+		SELECT * FROM QNAEFILE WHERE FILENUM=#{fileNum}
+	</select>
+	
+	
+	<insert id="setInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num" >
+		INSERT INTO QNA (NUM, TITLE, CONTENTS, WRITER, REGDATE, HIT, REF, STEP, DEPTH)
+		VALUES (#{num}, #{title}, #{contents}, #{writer}, now(), 0, 0, 0, 0)
+	</insert>
+	
+	<insert id="setFileInsert" parameterType="BoardFileVO">
+		INSERT INTO QNAFILE (NUM, FILENAME, ORINAME)
+		VALUES(#{num}, #{fileName}, #{oriName})
+	</insert>
+	
+	
+	
+	
+
+
+</mapper>  
