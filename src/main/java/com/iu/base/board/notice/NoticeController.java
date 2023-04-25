@@ -81,7 +81,19 @@ public class NoticeController {
 	
 	@PostMapping("add")
 	public ModelAndView setInsert(@Valid BoardVO boardVO,BindingResult bindingResult, MultipartFile[] boardFiles)throws Exception{
-				
+
+		log.error("======= {} =======", boardVO.getSubVO().getSubName());
+		
+		for(String n: boardVO.getNames()) {
+			log.error("======= {} =======", n);
+		}
+		
+		for(BoardFileVO boardFileVO:boardVO.getBoardFileVOs()) {
+			log.error("======= {} =======", boardFileVO.getFileName());
+		}
+		
+		
+		
 		ModelAndView mv = new ModelAndView();
 		if(bindingResult.hasErrors()) {
 			log.warn("============ 검증에 실패 =========");
@@ -93,7 +105,7 @@ public class NoticeController {
 			log.info("OriginalName : {} Size: {}", multipartFile.getOriginalFilename(), multipartFile.getSize());
 		}
 		
-		//int result = noticeService.setInsert(noticeVO, boardFiles);
+		//int result = noticeService.setInsert(boardVO, boardFiles);
 		mv.setViewName("redirect:./list");
 		return mv;
 	}
