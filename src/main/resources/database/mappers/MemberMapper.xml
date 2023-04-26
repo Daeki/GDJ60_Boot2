@@ -5,6 +5,11 @@
   
 <mapper namespace="com.iu.base.member.MemberDAO">
 
+	<select id="getBirth" resultType="MemberVO">
+		SELECT NAME FROM MEMBER
+		WHERE DATE_FORMAT(birth, '%M-%D')=DATE_FORMAT(now(), '%M-%D')
+	</select>
+
 	<update id="setEnabled">
 	UPDATE MEMBER SET ENABLED = 0
 	WHERE USERNAME 
