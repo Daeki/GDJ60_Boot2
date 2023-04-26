@@ -20,30 +20,39 @@ public class TestSchedule {
 	private MemberDAO memberDAO;
 	@Autowired
 	private NoticeDAO noticeDAO;
+	@Autowired
+	private MailManager mailManager;
 	
 	@Scheduled(cron = "40 * * * * *")
 	public void test() throws Exception {
-	
 		List<MemberVO> ar= memberDAO.getBirth();
 		
-		StringBuffer sb = new StringBuffer();
-		sb.append("오늘은 ");		
-		
 		for(MemberVO memberVO:ar) {
-			sb.append(memberVO.getName());
-			sb.append(", ");
+			mailManager.send(memberVO.getEmail(), "생일축하", "<h1>생일축하</h1>");
 		}
 		
-		sb.append(" 생일 입니다. 생일빵 !!");
 		
-		
-		NoticeVO noticeVO = new NoticeVO();
-		
-		noticeVO.setTitle("생축");
-		noticeVO.setWriter("사장님");
-		noticeVO.setContents(sb.toString());
-		
-		noticeDAO.setInsert(noticeVO);
+	
+//		List<MemberVO> ar= memberDAO.getBirth();
+//		
+//		StringBuffer sb = new StringBuffer();
+//		sb.append("오늘은 ");		
+//		
+//		for(MemberVO memberVO:ar) {
+//			sb.append(memberVO.getName());
+//			sb.append(", ");
+//		}
+//		
+//		sb.append(" 생일 입니다. 생일빵 !!");
+//		
+//		
+//		NoticeVO noticeVO = new NoticeVO();
+//		
+//		noticeVO.setTitle("생축");
+//		noticeVO.setWriter("사장님");
+//		noticeVO.setContents(sb.toString());
+//		
+//		noticeDAO.setInsert(noticeVO);
 		
 		
 	}

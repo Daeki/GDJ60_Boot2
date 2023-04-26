@@ -6,7 +6,7 @@
 <mapper namespace="com.iu.base.member.MemberDAO">
 
 	<select id="getBirth" resultType="MemberVO">
-		SELECT NAME FROM MEMBER
+		SELECT NAME, EMAIL FROM MEMBER
 		WHERE DATE_FORMAT(birth, '%M-%D')=DATE_FORMAT(now(), '%M-%D')
 	</select>
 
