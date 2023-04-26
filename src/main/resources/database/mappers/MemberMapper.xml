@@ -4,6 +4,28 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.iu.base.member.MemberDAO">
+
+	<update id="setEnabled">
+	UPDATE MEMBER SET ENABLED = 0
+	WHERE USERNAME 
+	IN 
+		( SELECT userName FROM MEMBER 
+		  WHERE TIMESTAMPDIFF(DAY, lastTime, now()) >= 3)
+<!--	
+	<![CDATA[  
+ 		UPDATE MEMBER SET ENABLED=0
+		WHERE LASTTIME <= now()-INTERVAL 3 DAY
+	]]>
+ -->	
+	</update>
+
+	<update id="setLastTimeUpdate" parameterType="MemberVO">
+		UPDATE MEMBER SET LASTTIME=now() WHERE USERNAME=#{userName}
+	</update>
+
+	<select id="getMembers" resultType="MemberVO">
+		SELECT USERNAME FROM MEMBER 
+	</select>
 	
 	<insert id="setJoin" parameterType="MemberVO">
 		INSERT INTO MEMBER (USERNAME,PASSWORD, NAME, EMAIL, BIRTH, ENABLED)

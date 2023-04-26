@@ -13,6 +13,10 @@ public class MemberService {
 	@Autowired
 	private MemberDAO memberDAO;
 	
+	public int setLastTimeUpdate(MemberVO memberVO)throws Exception{
+		return memberDAO.setLastTimeUpdate(memberVO);
+	};
+	
 	//패스워드가 일치하는지 검즈하는 메서드
 	public boolean memberCheck(MemberVO memberVO, BindingResult bindingResult)throws Exception{
 		boolean result=false;
