@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"  %>  
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"  %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>  
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -47,6 +48,8 @@
                         	<h1>
                         		
                         		<spring:message code="loginSuccess" text="없는 message" arguments="${member.userName},${member.name}" argumentSeparator="," ></spring:message>
+                        		<sec:authorize access="isAuthenticated()">로그인 성공</sec:authorize>
+                        		<sec:authorize access="!isAuthenticated()">로그인 전</sec:authorize>
                         		
                         	</h1>
                         	

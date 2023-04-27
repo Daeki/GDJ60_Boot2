@@ -4,15 +4,43 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
-public class MemberService {
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
+public class MemberService implements UserDetailsService {
 	
 	@Autowired
 	private MemberDAO memberDAO;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		log.error("=========== Spring Security Login ==============");
+		log.error("=========== {} ======== ", username );
+		MemberVO memberVO = new MemberVO();
+		memberVO.setUsername(username);
+		try {
+			memberVO = memberDAO.getLogin(memberVO);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return memberVO;
+	}
+
 	public int setLastTimeUpdate(MemberVO memberVO)throws Exception{
 		return memberDAO.setLastTimeUpdate(memberVO);
 	};
@@ -36,17 +64,18 @@ public class MemberService {
 		 MemberVO checkMember = memberDAO.idDuplicateCheck(memberVO);
 		 if(checkMember != null) {
 			 result=true;
-			 bindingResult.rejectValue("userName", "member.id.duplicate");
+			 bindingResult.rejectValue("username", "member.id.duplicate");
 		 }
 		
 		return result;
 	}
 	
 	public int setJoin(MemberVO memberVO)throws Exception{
-		memberVO.setEnabled(true);
+		//memberVO.setEnabled(true);
+		memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
 		int result = memberDAO.setJoin(memberVO);
 		Map<String, Object> map = new HashMap<>();
-		map.put("userName", memberVO.getUserName());
+		map.put("username", memberVO.getUsername());
 		map.put("num", 3);
 		result = memberDAO.setMemberRole(map);
 		

@@ -42,11 +42,11 @@
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
                                 <form:form id="contactForm" modelAttribute="memberVO" action="./join" method="post" data-sb-form-api-token="API_TOKEN">
-                                    <!-- USERName input-->
+                                    <!-- username input-->
                                     <div class="form-floating mb-3">
-                                        <form:input cssClass="form-control" id="userName" path="userName"   placeholder="Enter your UserName..." data-sb-validations="required" />
-                                        <form:label path="userName">User Name</form:label>
-                                        <form:errors path="userName"></form:errors>
+                                        <form:input cssClass="form-control" id="username" path="username"   placeholder="Enter your username..." data-sb-validations="required" />
+                                        <form:label path="username">User Name</form:label>
+                                        <form:errors path="username"></form:errors>
                                     </div>
                                     <!-- Password input-->
                                     <div class="form-floating mb-3">

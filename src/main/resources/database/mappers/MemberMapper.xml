@@ -12,9 +12,9 @@
 
 	<update id="setEnabled">
 	UPDATE MEMBER SET ENABLED = 0
-	WHERE USERNAME 
+	WHERE username 
 	IN 
-		( SELECT userName FROM MEMBER 
+		( SELECT username FROM MEMBER 
 		  WHERE TIMESTAMPDIFF(DAY, lastTime, now()) >= 3)
 <!--	
 	<![CDATA[  
@@ -25,41 +25,42 @@
 	</update>
 
 	<update id="setLastTimeUpdate" parameterType="MemberVO">
-		UPDATE MEMBER SET LASTTIME=now() WHERE USERNAME=#{userName}
+		UPDATE MEMBER SET LASTTIME=now() WHERE username=#{username}
 	</update>
 
 	<select id="getMembers" resultType="MemberVO">
-		SELECT USERNAME FROM MEMBER 
+		SELECT username FROM MEMBER 
 	</select>
 	
 	<insert id="setJoin" parameterType="MemberVO">
 		INSERT INTO MEMBER (USERNAME,PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
-		VALUES(#{userName}, #{password}, #{name}, #{email}, #{birth}, #{enabled})
+		VALUES(#{username}, #{password}, #{name}, #{email}, #{birth}, 1)
 	</insert>
 	
 	<insert id="setMemberRole" parameterType="Map">
-		INSERT INTO MEMBER_ROLE (USERNAME, NUM)
-		VALUES(#{userName}, #{num})
+		INSERT INTO MEMBER_ROLE (username, NUM)
+		VALUES(#{username}, #{num})
 	</insert>
 	
 	<select id="idDuplicateCheck" resultType="MemberVO" parameterType="MemberVO">
-		SELECT USERNAME FROM MEMBER WHERE USERNAME=#{userName}
+		SELECT username FROM MEMBER WHERE username=#{username}
 	</select>
 	
 	<select id="getLogin" parameterType="MemberVO" resultMap="getLoginResult">
-		SELECT M.userName, M.email, R.num, R.ROLENAME 
+		SELECT M.username,M.password, M.email, R.num, R.ROLENAME 
 		FROM MEMBER M
 			 INNER JOIN
 			 MEMBER_ROLE MR
-			 ON M.USERNAME = MR.USERNAME
+			 ON M.username = MR.username
 			 INNER JOIN
 			 ROLE R
 			 ON MR.NUM = R.NUM
-		WHERE M.USERNAME=#{userName} AND M.PASSWORD=#{password}
+		WHERE M.username=#{username} 
 	</select>
 	
 	<resultMap type="MemberVO" id="getLoginResult">
-		<id property="userName" column="USERNAME"/>
+		<id property="username" column="USERNAME"/>
+		<result property="password" column="PASSWORD"/>
 		<result property="email" column="EMAIL"/>
 		<collection property="roleVOs" javaType="List" ofType="RoleVO">
 			<id property="num" column="NUM"/>

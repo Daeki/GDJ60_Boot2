@@ -42,7 +42,7 @@
                                 <form id="contactForm" action="./login" method="post" data-sb-form-api-token="API_TOKEN">
                                     <!-- USERName input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="userName" name="userName" type="text" placeholder="Enter your UserName..." data-sb-validations="required" />
+                                        <input class="form-control" id="userName" name="username" type="text" placeholder="Enter your UserName..." data-sb-validations="required" />
                                         <label for="userName">User Name</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
@@ -57,6 +57,8 @@
                                     <!-- Submit Button-->
                                     <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
                                 </form>
+                                
+                                <a href="./findPassword">비밀번호 찾기</a>
                             </div>
                         </div>
                     </div>
