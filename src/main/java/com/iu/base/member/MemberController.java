@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +30,22 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@GetMapping("info")
 	public void info(HttpSession session) {
+		String pw="user1";
+		
+		MemberVO memberVO=(MemberVO)memberService.loadUserByUsername("user1");
+		
+		log.error("{} ::::: ", memberVO.getPassword());
+		log.error("{} ::::: ", passwordEncoder.encode(pw));
+		log.error("{} :::::", memberVO.getPassword().equals(passwordEncoder.encode(pw)));
+		
+		boolean check = passwordEncoder.matches(pw, memberVO.getPassword());
+		log.error("{} :::: ", check);
+		
 		
 		log.error("======== Login Info ===========");
 		//SPRING_SECURITY_CONTEXT
@@ -38,15 +53,15 @@ public class MemberController {
 //		while(names.hasMoreElements()) {
 //			log.error("==== {} === ", names.nextElement());
 //		}
-		Object obj =session.getAttribute("SPRING_SECURITY_CONTEXT");
-		log.error("========== {} =========", obj);
-		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
-		Authentication authentication= contextImpl.getAuthentication();
-		
-		log.error("====== {} ======", obj);
-		log.error("====== USERNAME :  {} ======", authentication.getName());
-		log.error("====== Detail :  {} ======", authentication.getDetails());
-		log.error("====== MemberVO :  {} ======", authentication.getPrincipal());
+//		Object obj =session.getAttribute("SPRING_SECURITY_CONTEXT");
+//		log.error("========== {} =========", obj);
+//		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
+//		Authentication authentication= contextImpl.getAuthentication();
+//		
+//		log.error("====== {} ======", obj);
+//		log.error("====== USERNAME :  {} ======", authentication.getName());
+//		log.error("====== Detail :  {} ======", authentication.getDetails());
+//		log.error("====== MemberVO :  {} ======", authentication.getPrincipal());
 	}
 	
 	@GetMapping("admin")
