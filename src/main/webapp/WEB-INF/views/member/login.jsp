@@ -54,6 +54,12 @@
                                         <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                                     </div>
                                    
+                                   
+                                   <div class="form-floating mb-3">
+                                        <input  id="remember" value="remember" name="remember" type="checkbox" data-sb-validations="required,email" />
+                                        <label for="remember">ID기억하기</label>
+                                    </div>
+                                   
                                     <!-- Submit Button-->
                                     <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
                                 </form>
