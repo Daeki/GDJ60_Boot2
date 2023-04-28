@@ -31,6 +31,7 @@ public class MemberController {
 	
 	@GetMapping("info")
 	public void info(HttpSession session) {
+		
 		log.error("======== Login Info ===========");
 		//SPRING_SECURITY_CONTEXT
 //		Enumeration<String> names = session.getAttributeNames();
@@ -43,9 +44,9 @@ public class MemberController {
 		Authentication authentication= contextImpl.getAuthentication();
 		
 		log.error("====== {} ======", obj);
-		log.error("====== NAME :  {} ======", authentication.getName());
+		log.error("====== USERNAME :  {} ======", authentication.getName());
 		log.error("====== Detail :  {} ======", authentication.getDetails());
-		log.error("====== Principal :  {} ======", authentication.getPrincipal());
+		log.error("====== MemberVO :  {} ======", authentication.getPrincipal());
 	}
 	
 	@GetMapping("admin")
@@ -113,9 +114,16 @@ public class MemberController {
 	}
 	
 	@GetMapping("login")
-	public ModelAndView getLogin()throws Exception{
+	public ModelAndView getLogin(HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("member/login");
+		
+		Object obj =session.getAttribute("SPRING_SECURITY_CONTEXT");
+		
+		if(obj==null) {
+			mv.setViewName("member/login");
+		}else {
+			mv.setViewName("redirect:/");
+		}
 		return mv;
 	}
 	
