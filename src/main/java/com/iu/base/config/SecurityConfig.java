@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.iu.base.member.MemberService;
+import com.iu.base.member.MemberSocialService;
 import com.iu.base.security.UserLoginFailHandler;
 import com.iu.base.security.UserLogoutSuccessHandler;
 import com.iu.base.security.UserSuccessHandler;
@@ -19,6 +21,9 @@ import com.iu.base.security.UserSuccessHandler;
 public class SecurityConfig {
 	@Autowired
 	private UserLogoutSuccessHandler logoutSuccessHandler;
+	
+	@Autowired
+	private MemberSocialService memberSocialService;
 	
 	@Bean
 	//public 을 선언하면 default로 바꾸라는 메세지 출력
@@ -37,7 +42,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain fiterChain(HttpSecurity httpSecurity)throws Exception{
 		httpSecurity
-				.cors()
+				.cors()	
 				.and()
 				.csrf()
 				.disable()
@@ -45,7 +50,7 @@ public class SecurityConfig {
 				//URL과 권한 매칭
 				.antMatchers("/").permitAll()
 				.antMatchers("/member/join").permitAll()
-				.antMatchers("/notice/add").hasRole("ADMIN")
+				.antMatchers("/notice/add").hasRole("MEMBER")
 				.antMatchers("/notice/update").hasRole("ADMIN")
 				.antMatchers("/notice/delete").hasRole("ADMIN")
 				.antMatchers("/notice/*").permitAll()
@@ -69,8 +74,23 @@ public class SecurityConfig {
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
 				.permitAll()
+				.and()
+			.oauth2Login()
+				.userInfoEndpoint()
+				.userService(memberSocialService)
 				
 				;
+//			.sessionManagement()
+//				.maximumSessions(1) //최대 허용 가능한 session 수, -1 : 무제한
+//				
+//				.maxSessionsPreventsLogin(false) //false : 이전사용자 세션만료, true: 새로운 사용자 인증 실패
+//				
+//				.expiredUrl("/")
+//				.and()
+//			.invalidSessionUrl("/")
+//			.sessionFixation()
+//				.newSession()
+//				;
 		
 		return httpSecurity.build();
 	}
