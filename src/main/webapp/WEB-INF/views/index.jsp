@@ -56,7 +56,12 @@
                         		
                         		
                         	</h1>
-                        	
+                        	<form action="https://kauth.kakao.com/oauth/logout" method="post" novalidate="true">
+                                <input name="stsc" value="uOwowQHsz4xQad4gRDRZKLqEoCPvOkimeeBDuyoWybEQEXzzuNuQGRiZHVCu6EvYjv0pXcSMdJpajgCuxPY8nd5A9oTqzJIdCZ7WJPc1V5Oc4X82mXmZuWAM_eBlqnBGD7k7JIJ6V_KtY7JD7p9kbKnd0wnth6FOyd7e5NoYtpQ" type="hidden">
+                                <input name="csts" value="yWGV4uIKMX0eJkQInBxleEioztmE0jE7SPvhDADEFWS9zkD7x1RerA1E82kRUBQ0Z020S6z4h0f8R9NwsSvtTR52KqQwRW9f44y8kyK8l31J59wdnSBLpZmo0USOHJTmBk8Dw4JmYYV-3-HmIpyTfUdBjnhDcw26zK8WwOMsiETWhcwf0SUKlcuJJdGTzIy6XddRBKUz3TR8TANArIxobpJ84KeahQsf1I3ILDGDQYsW8p0-tp5zzNS4XDi25zr9tC5yD6OkgZPjqkz_MwNENOpZ-2_buZnsaDPkqhkpts1eBeXozHAjkR_VN3Kc8a8J" type="hidden">
+                                <button class="btn_g" type="submit" name="logout_with_kakao" value="false">이 서비스만 로그아웃</button>
+                                <button class="btn_g" type="submit" name="logout_with_kakao" value="true">카카오계정과 함께 로그아웃</button>
+                            </form>
                         	<!-- message -->
                         	<h2 class="fw-bolder mb-0">A better way to start building.</h2>
                      

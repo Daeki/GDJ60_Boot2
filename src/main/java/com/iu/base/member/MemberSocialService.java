@@ -21,7 +21,8 @@ public class MemberSocialService extends DefaultOAuth2UserService {
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		// TODO Auto-generated method stub
-		
+		// kakao에서 로그인 처리 후 실행
+		// 
 		log.error("{} ::: social", userRequest.getAccessToken());
 		
 		ClientRegistration registration=userRequest.getClientRegistration();
@@ -37,7 +38,9 @@ public class MemberSocialService extends DefaultOAuth2UserService {
 	}
 	
 	private OAuth2User socialJoinCheck(OAuth2UserRequest auth2UserRequest) {
-		//DB에서 조회 후 회원 추가 또는 회원정보 조회
+		//DB에서 조회 후 회원 추가 또는 회원정보(Role) 조회
+		//Kakao에서 받은 정보를 MemberVO로 변경 
+		//
 		OAuth2User user= super.loadUser(auth2UserRequest);
 		
 		Map<String, Object> map = user.getAttributes();
@@ -53,9 +56,13 @@ public class MemberSocialService extends DefaultOAuth2UserService {
 		log.error("NickName {} ::",m.get("nickname"));
 		
 		MemberVO memberVO = new MemberVO();
+		
+		memberVO.setAttributes(map);
+		
 		memberVO.setUsername(m.get("nickname").toString());
 		
 		List<RoleVO> roleVOs = new ArrayList<>();
+		//DB 조회
 		RoleVO roleVO = new RoleVO();
 		roleVO.setRoleName("ROLE_MEMBER");
 		roleVOs.add(roleVO);

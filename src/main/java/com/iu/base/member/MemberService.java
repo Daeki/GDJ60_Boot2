@@ -65,6 +65,8 @@ public class MemberService implements UserDetailsService {
 			bindingResult.rejectValue("passwordCheck", "member.password.notEqual");
 		}
 		
+		
+		
 		//3. ID중복 검사
 		 MemberVO checkMember = memberDAO.idDuplicateCheck(memberVO);
 		 if(checkMember != null) {
